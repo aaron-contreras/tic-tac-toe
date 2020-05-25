@@ -43,8 +43,6 @@ class Game
     until win? || tie?
       board.update_grid(current_player, get_move)
       board.show
-      win?
-      tie?
       switch_turns unless win? || tie?
     end
 
