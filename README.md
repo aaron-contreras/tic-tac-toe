@@ -1,5 +1,5 @@
 # Tic Tac Toe
-
+[Try it in repl.it](https://repl.it/@aaroncontreras/tic-tac-toe-5#game.rb)
 ## Game rules
 
   (Formal restatement of the problem) Players take turns to place an X or an O until one or none has placed 3 vertical, horizontal or diagonal pieces, at which point he has one. If the board is filled and none has placed 3 consecutive pieces, the game is a tie.
