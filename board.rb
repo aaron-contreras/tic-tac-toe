@@ -1,7 +1,8 @@
 require 'pry'
 class Board
-  def initialize
-    @grid = build_grid
+
+  def initialize mode
+    @grid = build_grid mode
   end
 
   def valid_move? move
@@ -55,8 +56,12 @@ class Board
   end
 
   private
-  def build_grid
-    Array.new(9, '')
+  def build_grid mode
+    if mode == :playing
+      Array.new(9, '')
+    else
+      Array.new(9) {|index| index.to_s}
+    end
   end
 
   attr_accessor :grid

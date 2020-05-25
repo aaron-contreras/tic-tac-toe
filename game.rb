@@ -2,13 +2,29 @@ require_relative 'player'
 require_relative 'board'
 
 class Game
+  SAMPLE = Board.new :sample
   @@selection = 1
   @@player_one_turn = true
+
   def initialize player_one_info, player_two_info
-    @board = Board.new
+    @board = Board.new :playing
     @player_one = Player.new player_one_info
     @player_two = Player.new player_two_info
     @win = false
+  end
+
+  def self.show_instructions
+    puts "Tic-Tac-Toe".center(80)
+    puts "--------------".center(80)
+    print "These are the move positions on the board. "
+    puts "They're labeled 0-8 from left to right, top to bottom."
+    SAMPLE.show
+    puts
+  end
+
+  def self.start_game
+    show_instructions
+    Game.new get_player_info, get_player_info
   end
 
   def self.get_player_info
@@ -23,6 +39,7 @@ class Game
   end
 
   def play
+   board.show 
     until win? || tie?
       board.update_grid(current_player, get_move)
       board.show
@@ -106,8 +123,8 @@ class Game
       player_two
     end
   end
+
 end
 
-game = Game.new(Game.get_player_info, Game.get_player_info)
-
+game = Game.start_game
 game.play
