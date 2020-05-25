@@ -1,5 +1,4 @@
 class Board
-
   def initialize mode
     @grid = build_grid mode
   end
@@ -24,10 +23,6 @@ class Board
 
   def cell_at index
     @grid[index]
-  end
-
-  def update_display
-    p grid
   end
 
   def show
