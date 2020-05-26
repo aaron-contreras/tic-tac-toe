@@ -1,6 +1,6 @@
 require_relative 'player'
 require_relative 'board'
-
+require 'pry'
 class Game
   SAMPLE = Board.new :sample
   @@selection = 1
@@ -30,10 +30,8 @@ class Game
   def self.get_player_info
     print "What is Player #{@@selection}'s name? "
     name = gets.chomp
-
-    print "What piece will #{name} be playing as? Choose any character of your liking: "
-    piece = gets.chomp.upcase
-
+    print "What piece will #{name} be playing as? Choose any single-character of your liking: "
+    piece = gets.chomp[0].upcase
     @@selection += 1
     [name, piece]
   end
