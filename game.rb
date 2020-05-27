@@ -5,6 +5,9 @@ require_relative 'board'
 require 'pry'
 # Contains the tic-tac-toe logic
 class Game
+  attr_reader :player_one, :player_two, :board
+  attr_writer :player_one_turn
+
   SAMPLE = Board.new :sample
   @selection = 1
 
@@ -62,9 +65,6 @@ class Game
   end
 
   private
-
-  attr_reader :player_one, :player_two, :board
-  attr_writer :player_one_turn
 
   def find_matches(win_condition, piece)
     @win = win_condition.all? do |index|

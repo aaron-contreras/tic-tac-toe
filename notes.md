@@ -4,10 +4,11 @@ I have found a "perfect match" strategy on wikipedia so let's implement that as 
 
 First let's set up the task list of things to be done for this version
 
-- [ ] Read up on rubocop
-- [ ] Implement rubocop into my project
+- [x] Read up on rubocop
+- [x] Implement rubocop into my project
 - [ ] Break down the logic of the computer's moves
   - [ ] Easy
+    - Computer plays random moves
   - [ ] Medium
   - [ ] Extreme
   - [ ] Computer cheating mode lol

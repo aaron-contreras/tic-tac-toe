@@ -2,6 +2,7 @@
 
 # Board where the game is played on
 class Board
+
   def initialize(mode)
     @grid = build_grid mode
   end
@@ -9,7 +10,7 @@ class Board
   def valid_move?(move)
     return false if move.nil?
 
-    if grid[move].empty?
+    if @grid[move].empty?
       true
     else
       false
@@ -17,7 +18,7 @@ class Board
   end
 
   def update_grid(player, move)
-    grid[move] = player.piece
+    @grid[move] = player.piece
   end
 
   def filled?
@@ -32,10 +33,10 @@ class Board
     3.times do |inner_index|
       cell = row * 3 + inner_index
 
-      built_string += if grid[cell].empty?
+      built_string += if @grid[cell].empty?
                         ' '
                       else
-                        grid[cell]
+                        @grid[cell]
                       end
 
       built_string += '|' unless inner_index == 2
@@ -75,5 +76,4 @@ class Board
       Array.new(9, &:to_s)
     end
   end
-  attr_accessor :grid
 end

@@ -2,6 +2,8 @@
 
 # Players required to play a game
 class Player
+  attr_reader :piece, :name
+
   def initialize(player_info)
     @name = player_info[0]
     @piece = player_info[1]
@@ -11,6 +13,4 @@ class Player
   def turn?
     @turn
   end
-
-  attr_reader :piece, :name
 end

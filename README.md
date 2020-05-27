@@ -8,6 +8,10 @@
 - What does a tic-tac-toe game have and do?
 
   1. Players
+    - Human <
+    - Computer <
+      - Have?
+      - Difficulty level
     - Have?
       - [x] Name
       - [x] Piece (X or O)
