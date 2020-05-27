@@ -2,9 +2,8 @@
 
 # Board where the game is played on
 class Board
-
-  def initialize(mode)
-    @grid = build_grid mode
+  def initialize
+    @grid = build_grid
   end
 
   def valid_move?(move)
@@ -29,51 +28,32 @@ class Board
     @grid[index]
   end
 
-  def print_moves(built_string, row)
-    3.times do |inner_index|
-      cell = row * 3 + inner_index
-
-      built_string += if @grid[cell].empty?
-                        ' '
-                      else
-                        @grid[cell]
-                      end
-
-      built_string += '|' unless inner_index == 2
+  def prepare_for_display
+    @grid.map do |cell|
+      if cell.empty?
+        ' '
+      else
+        cell
+      end
     end
-
-    built_string
-  end
-
-  def print_dividers
-    horizontal_dividers = ''
-    5.times { horizontal_dividers += '-' }
-    puts horizontal_dividers
   end
 
   def show
-    puts
-
-    3.times do |outer_index|
-      row_output = ''
-      row_output += print_moves row_output, outer_index
-      puts row_output
-
-      next if outer_index == 2
-
-      print_dividers
-    end
+    grid = prepare_for_display
+    puts <<~HEREDOC
+    #{grid[0]}|#{grid[1]}|#{grid[2]}
+    -+-+-
+    #{grid[3]}|#{grid[4]}|#{grid[5]}
+    -+-+-
+    #{grid[6]}|#{grid[7]}|#{grid[8]}
+    HEREDOC
 
     puts
   end
 
   private
 
-  def build_grid(mode)
-    if mode == :playing
-      Array.new(9, '')
-    else
-      Array.new(9, &:to_s)
-    end
+  def build_grid
+    Array.new(9, '')
   end
 end

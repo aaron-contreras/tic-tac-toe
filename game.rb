@@ -1,67 +1,55 @@
 # frozen_string_literal: true
 
-require_relative 'player'
-require_relative 'board'
+require_relative './player.rb'
+require_relative './board.rb'
+require_relative './displayable.rb'
 require 'pry'
 # Contains the tic-tac-toe logic
 class Game
+  include Displayable
   attr_reader :player_one, :player_two, :board
   attr_writer :player_one_turn
 
-  SAMPLE = Board.new :sample
-  @selection = 1
-
-  def initialize(player_one_info, player_two_info)
-    @board = Board.new :playing
-    @player_one = Player.new player_one_info
-    @player_two = Player.new player_two_info
-    @player_one_turn = true
+  def initialize
+    show_instructions
+    @board = Board.new
+    @game_mode = game_mode
+    @player_one = Player.new ask_user_info(1)
+    @player_two = Player.new ask_user_info(2)
+    @player_one_turn = rand(2)
     @win = false
   end
 
-  def self.show_instructions
-    puts 'Tic-Tac-Toe'.center(80)
-    puts '--------------'.center(80)
-    print 'These are the move positions on the board. '
-    puts "They're labeled 0-8 from left to right, top to bottom."
-    SAMPLE.show
-    puts
-  end
-
-  def self.setup_game
-    show_instructions
-    Game.new ask_user_info, ask_user_info
-  end
-
-  def self.ask_user_info
-    print "What is Player #{@selection}'s name? "
+  def ask_user_info(player_number)
+    ask_players_name(player_number)
     name = gets.chomp
-    print "What piece will #{name} be playing as? Choose any single-character of your liking: "
+
+    ask_players_piece(name)
     piece = gets.chomp[0].upcase
-    @selection += 1
+
     [name, piece]
   end
 
   def play
     until win? || tie?
-      board.update_grid(current_player, ask_for_move)
+      board.update_grid(current_player, player_move)
       board.show
       switch_turns unless win? || tie?
     end
   end
 
-  def show_game_over_message
+  def game_over
     if win?
-      puts "#{current_player.name} has won!"
+      win_message current_player
     else
-      puts "It's a tie!"
+      tie_message
     end
   end
 
   def start_game
     board.show
     play
-    show_game_over_message
+    game_over
   end
 
   private
@@ -94,11 +82,11 @@ class Game
     @tie = true if board.filled?
   end
 
-  def ask_for_move
+  def player_move
     move = nil
 
     until board.valid_move? move
-      print 'Where would you like to place your move? '
+      ask_player_for_move
       possible_move = gets.chomp
 
       move = possible_move.to_i if possible_move.between?('0', '8')
@@ -108,11 +96,7 @@ class Game
   end
 
   def switch_turns
-    self.player_one_turn = if player_one_turn?
-                             false
-                           else
-                             true
-                           end
+    self.player_one_turn = player_one_turn? ? false : true
   end
 
   def player_one_turn?
@@ -128,5 +112,5 @@ class Game
   end
 end
 
-game = Game.setup_game
+game = Game.new
 game.start_game
