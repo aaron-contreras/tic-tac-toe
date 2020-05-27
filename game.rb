@@ -1,49 +1,53 @@
+# frozen_string_literal: true
+
 require_relative 'player'
 require_relative 'board'
 require 'pry'
+# Contains the tic-tac-toe logic
 class Game
   SAMPLE = Board.new :sample
-  @@selection = 1
-  @@player_one_turn = true
+  @selection = 1
 
-  def initialize player_one_info, player_two_info
+  def initialize(player_one_info, player_two_info)
     @board = Board.new :playing
     @player_one = Player.new player_one_info
     @player_two = Player.new player_two_info
+    @player_one_turn = true
     @win = false
   end
 
   def self.show_instructions
-    puts "Tic-Tac-Toe".center(80)
-    puts "--------------".center(80)
-    print "These are the move positions on the board. "
+    puts 'Tic-Tac-Toe'.center(80)
+    puts '--------------'.center(80)
+    print 'These are the move positions on the board. '
     puts "They're labeled 0-8 from left to right, top to bottom."
     SAMPLE.show
     puts
   end
 
-  def self.start_game
+  def self.setup_game
     show_instructions
-    Game.new get_player_info, get_player_info
+    Game.new ask_user_info, ask_user_info
   end
 
-  def self.get_player_info
-    print "What is Player #{@@selection}'s name? "
+  def self.ask_user_info
+    print "What is Player #{@selection}'s name? "
     name = gets.chomp
     print "What piece will #{name} be playing as? Choose any single-character of your liking: "
     piece = gets.chomp[0].upcase
-    @@selection += 1
+    @selection += 1
     [name, piece]
   end
 
   def play
-   board.show 
     until win? || tie?
-      board.update_grid(current_player, get_move)
+      board.update_grid(current_player, ask_for_move)
       board.show
       switch_turns unless win? || tie?
     end
+  end
 
+  def show_game_over_message
     if win?
       puts "#{current_player.name} has won!"
     else
@@ -51,65 +55,68 @@ class Game
     end
   end
 
+  def start_game
+    board.show
+    play
+    show_game_over_message
+  end
+
   private
+
   attr_reader :player_one, :player_two, :board
+  attr_writer :player_one_turn
+
+  def find_matches(win_condition, piece)
+    @win = win_condition.all? do |index|
+      board.cell_at(index) == piece
+    end
+  end
 
   def win?
     win_conditions = [
-      [0, 1, 2],
-      [3, 4, 5],
-      [6, 7, 8],
-      [0, 4, 8],
-      [6, 4, 2],
-      [0, 3, 6],
-      [1, 4, 7],
-      [2, 5, 8]
+      [0, 1, 2], [3, 4, 5], [6, 7, 8], [0, 4, 8],
+      [6, 4, 2], [0, 3, 6], [1, 4, 7], [2, 5, 8]
     ]
 
     win_conditions.each do |win_condition|
-      @win = true if (win_condition.all? {|index| board.cell_at(index) == player_one.piece})
-      @win = true if (win_condition.all? {|index| board.cell_at(index) == player_two.piece})
+      find_matches(win_condition, player_one.piece)
+      break if @win
+
+      find_matches(win_condition, player_two.piece)
     end
 
     @win
   end
 
   def tie?
-    unless win?
-      @tie = true if board.filled?
-    end
+    return if win?
+
+    @tie = true if board.filled?
   end
 
-  def get_move
+  def ask_for_move
     move = nil
 
     until board.valid_move? move
-      print "Where would you like to place your move? "
-      move = gets.chomp
+      print 'Where would you like to place your move? '
+      possible_move = gets.chomp
 
-      if move.between?('0', '8') && move.length == 1
-        move = move.to_i
-      else
-        move = nil
-      end
+      move = possible_move.to_i if possible_move.between?('0', '8')
     end
+
     move
   end
 
   def switch_turns
-    if player_one_turn?
-      self.player_one_turn = false
-    else
-      self.player_one_turn = true
-    end
+    self.player_one_turn = if player_one_turn?
+                             false
+                           else
+                             true
+                           end
   end
 
   def player_one_turn?
-    @@player_one_turn
-  end
-
-  def player_one_turn=(value)
-    @@player_one_turn = value
+    @player_one_turn
   end
 
   def current_player
@@ -119,8 +126,7 @@ class Game
       player_two
     end
   end
-
 end
 
-game = Game.start_game
-game.play
+game = Game.setup_game
+game.start_game
