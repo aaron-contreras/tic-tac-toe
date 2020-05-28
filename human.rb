@@ -10,7 +10,7 @@ class Human < Player
       possible_move = gets.chomp
       move = possible_move.to_i if possible_move.between?('0', '8')
     end
-
+    add_move_to_list move
     move
   end
 end

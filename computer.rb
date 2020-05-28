@@ -25,10 +25,16 @@ class Computer < Player
   end
 
   def move(board)
-    self.send @intelligence.to_sym, board
+    move = self.send(@intelligence.to_sym, board)
+    add_move_to_list move
+    move
   end
 
   def not_much(board)
     board.empty_cells.sample
+  end
+
+  def very(board)
+    
   end
 end

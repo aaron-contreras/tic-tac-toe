@@ -6,13 +6,19 @@ First let's set up the task list of things to be done for this version
 
 - [x] Read up on rubocop
 - [x] Implement rubocop into my project
-- [ ] Set game modes
-  - [ ] Human vs Human
-  - [ ] Human vs Computer
-  - [ ] Computer vs Computer
-- [ ] Break down the logic of the computer's moves
-  - [ ] Easy
-    - Computer plays random moves
+- [x] Set game modes
+  - [x] Human vs Human
+  - [x] Human vs Computer
+  - [x] Computer vs Computer
+- [x] Break down the logic of the computer's moves
+- [x] Call the corresponding method of difficulty depending on intelligence level
+  - [x] Easy
+    - [x] Computer plays random moves.
+      - [x] Get the empty cells in the board.
+      - [x] Pick a random cell from the empty ones
   - [ ] Medium
+    - [ ] Play as easy mode unless the other player is missing one move to win
+      - [ ] If other player is missing one move to win
+        - [ ] Place the move in the remaining square (`one?` method)
   - [ ] Extreme
   - [ ] Computer cheating mode lol
