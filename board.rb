@@ -28,6 +28,12 @@ class Board
     @grid[index]
   end
 
+  def empty_cells
+    empty_cells = @grid.map.with_index do |cell, index|
+      index if cell.empty?
+    end.compact
+  end
+
   def prepare_for_display
     @grid.map do |cell|
       if cell.empty?

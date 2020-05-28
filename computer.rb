@@ -3,26 +3,32 @@
 require_relative './player.rb'
 # Player controlled by A.I.
 class Computer < Player
-  LEVELS = ['not much', 'very', 'genius'].freeze
+  LEVELS = ['not_much', 'very', 'genius'].freeze
 
   def initialize(player_info)
     super (player_info.first 2)
     @intelligence = player_info.last
   end
 
+  def self.match_modes(intelligence)
+    LEVELS.select do |level|
+      level[0] == intelligence
+    end[0]
+  end
+
   def self.intelligence_level
-    intelligence = gets.chomp until LEVELS.include? intelligence
-    intelligence
+    loop do
+      selected_mode = gets.chomp[0]
+      intelligence = match_modes(selected_mode)
+      break intelligence unless intelligence.empty?
+    end
   end
 
   def move(board)
-    move = nil
+    self.send @intelligence.to_sym, board
+  end
 
-    until board.valid_move? move
-      possible_move = gets.chomp
-      move = possible_move.to_i if possible_move.between?('0', '8')
-    end
-
-    move
+  def not_much(board)
+    board.empty_cells.sample
   end
 end

@@ -99,6 +99,7 @@ class Game
       break if @win
 
       find_matches(win_condition, player_two.piece)
+      break if @win
     end
 
     @win
