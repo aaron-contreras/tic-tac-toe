@@ -13,4 +13,10 @@ class Player
   def turn?
     @turn
   end
+
+  def move(board); end
+
+  def self.ai?
+    true
+  end
 end

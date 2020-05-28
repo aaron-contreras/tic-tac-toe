@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 require_relative './player.rb'
+require_relative './human.rb'
+require_relative './computer.rb'
 require_relative './board.rb'
 require_relative './displayable.rb'
 require 'pry'
@@ -10,29 +12,55 @@ class Game
   attr_reader :player_one, :player_two, :board
   attr_writer :player_one_turn
 
+  GAME_MODES = {
+    1 => %w[Human Human],
+    2 => %w[Human Computer],
+    3 => %w[Computer Computer]
+  }.freeze
+
   def initialize
     show_instructions
     @board = Board.new
     @game_mode = game_mode
-    @player_one = Player.new ask_user_info(1)
-    @player_two = Player.new ask_user_info(2)
+    @player_one = create_player(1)
+    @player_two = create_player(2)
     @player_one_turn = rand(2)
     @win = false
+    p player_one, player_two
   end
 
-  def ask_user_info(player_number)
-    ask_players_name(player_number)
+  def game_mode
+    ask_game_mode GAME_MODES
+    mode = gets.chomp.to_i until GAME_MODES.key? mode
+    mode
+  end
+
+  def details(player_number, is_ai = nil)
+    ask_players_name player_number
     name = gets.chomp
 
-    ask_players_piece(name)
+    ask_players_piece name
     piece = gets.chomp[0].upcase
 
-    [name, piece]
+    if is_ai
+      ask_intelligence_level name
+      [name, piece, Computer.intelligence_level]
+    else
+      [name, piece]
+    end
+  end
+
+  def create_player(player_number)
+    if GAME_MODES[@game_mode][player_number - 1] == 'Human'
+      Human.new details(player_number)
+    else
+      Computer.new details(player_number, Player.ai?)
+    end
   end
 
   def play
     until win? || tie?
-      board.update_grid(current_player, player_move)
+      board.update_grid(current_player, current_player.move(board))
       board.show
       switch_turns unless win? || tie?
     end
@@ -82,18 +110,18 @@ class Game
     @tie = true if board.filled?
   end
 
-  def player_move
-    move = nil
+  # def player_move
+  #   move = nil
 
-    until board.valid_move? move
-      ask_player_for_move
-      possible_move = gets.chomp
+  #   until board.valid_move? move
+  #     ask_player_for_move
+  #     possible_move = gets.chomp
 
-      move = possible_move.to_i if possible_move.between?('0', '8')
-    end
+  #     move = possible_move.to_i if possible_move.between?('0', '8')
+  #   end
 
-    move
-  end
+  #   move
+  # end
 
   def switch_turns
     self.player_one_turn = player_one_turn? ? false : true

@@ -12,12 +12,15 @@ module Displayable
     HEREDOC
   end
 
-  def game_mode
+  def ask_game_mode(modes)
+    mode1 = modes[1]
+    mode2 = modes[2]
+    mode3 = modes[3]
     puts <<~HEREDOC
       Select the game mode:
-        (1) Human vs Human
-        (2) Human vs Computer
-        (3) Computer vs Computer
+        (1) #{mode1.first} vs #{mode1.last}
+        (2) #{mode2.first} vs #{mode2.last}
+        (3) #{mode3.first} vs #{mode3.last}
     HEREDOC
   end
 
@@ -36,6 +39,15 @@ module Displayable
 
   def ask_players_piece(player_name)
     print "What piece will #{player_name} be playing as? Choose any single-character of your liking: "
+  end
+
+  def ask_intelligence_level(computer_name)
+    puts <<~HEREDOC
+      How smart is #{computer_name}?
+        (not much)
+        (very)
+        (genius)
+    HEREDOC
   end
 
   def ask_player_for_move
