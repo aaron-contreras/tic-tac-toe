@@ -18,6 +18,11 @@ class Game
     3 => %w[Computer Computer]
   }.freeze
 
+  WIN_CONDITIONS = [
+    [0, 1, 2], [3, 4, 5], [6, 7, 8], [0, 4, 8],
+    [6, 4, 2], [0, 3, 6], [1, 4, 7], [2, 5, 8]
+  ].freeze
+
   def initialize
     show_instructions
     @board = Board.new
@@ -58,11 +63,15 @@ class Game
     end
   end
 
+  def players_move
+    current_player.move(board, other_player)
+  end
+
   def play
     until win? || tie?
-      board.update_grid(current_player, current_player.move(board))
+      board.update_grid(current_player, players_move)
+      current_player.can_win?(board, WIN_CONDITIONS)
       board.show
-      binding.pry
       switch_turns unless win? || tie?
     end
   end
@@ -90,12 +99,8 @@ class Game
   end
 
   def win?
-    win_conditions = [
-      [0, 1, 2], [3, 4, 5], [6, 7, 8], [0, 4, 8],
-      [6, 4, 2], [0, 3, 6], [1, 4, 7], [2, 5, 8]
-    ]
 
-    win_conditions.each do |win_condition|
+    WIN_CONDITIONS.each do |win_condition|
       find_matches(win_condition, player_one.piece)
       break if @win
 
@@ -112,19 +117,6 @@ class Game
     @tie = true if board.filled?
   end
 
-  # def player_move
-  #   move = nil
-
-  #   until board.valid_move? move
-  #     ask_player_for_move
-  #     possible_move = gets.chomp
-
-  #     move = possible_move.to_i if possible_move.between?('0', '8')
-  #   end
-
-  #   move
-  # end
-
   def switch_turns
     self.player_one_turn = player_one_turn? ? false : true
   end
@@ -138,6 +130,14 @@ class Game
       player_one
     else
       player_two
+    end
+  end
+
+  def other_player
+    if player_one_turn?
+      player_two
+    else
+      player_one
     end
   end
 end

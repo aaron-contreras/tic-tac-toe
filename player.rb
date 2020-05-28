@@ -3,19 +3,21 @@
 # Players required to play a game
 class Player
   attr_reader :piece, :name
+  attr_accessor :winning_move
 
   def initialize(player_info)
     @name = player_info[0]
     @piece = player_info[1]
     @turn = false
     @moves = []
+    @winning_move = nil
   end
 
   def turn?
     @turn
   end
 
-  def move(board); end
+  def move(board, other_player); end
 
   def self.ai?
     true
@@ -25,8 +27,18 @@ class Player
     @moves.push(move)
   end
 
-  private
+  def can_win?(board, win_conditions)
+    win_conditions.each_with_index do |condition, index|
+      matches = @moves.select do |move|
+        condition.include? move
+      end
 
-  def missing_one?(board, win_conditions)
+      if matches.length == 2
+        @winning_move = (condition - matches).first.to_i
+        break
+      end
+    end
+    
+    @winning_move.nil? ? false : true
   end
 end

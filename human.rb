@@ -3,7 +3,7 @@
 require_relative './player.rb'
 # User controlled player
 class Human < Player
-  def move(board)
+  def move(board, other_player)
     move = nil
 
     until board.valid_move? move

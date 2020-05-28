@@ -24,17 +24,26 @@ class Computer < Player
     end
   end
 
-  def move(board)
-    move = self.send(@intelligence.to_sym, board)
+  def move(board, other_player)
+    move = self.send(@intelligence.to_sym, board, other_player)
     add_move_to_list move
+    clear_winning_move other_player
     move
   end
 
-  def not_much(board)
+  def clear_winning_move(other_player)
+    other_player.winning_move = nil
+  end
+
+  def not_much(board, other_player)
     board.empty_cells.sample
   end
 
-  def very(board)
-    
+  def very(board, other_player)
+    if other_player.winning_move 
+      other_player.winning_move
+    else
+      not_much(board, other_player)
+    end
   end
 end
