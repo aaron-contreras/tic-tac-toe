@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 require_relative './player.rb'
-require 'pry'
 # Player controlled by A.I.
 class Computer < Player
   LEVELS = %w[not_much very genius].freeze
