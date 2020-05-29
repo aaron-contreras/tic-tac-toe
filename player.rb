@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 # Players required to play a game
+require 'pry'
 class Player
   attr_reader :piece, :name
   attr_accessor :winning_move
@@ -34,11 +35,12 @@ class Player
       end
 
       if matches.length == 2
-        @winning_move = (condition - matches).first.to_i
-        break
+        missing_move = (condition - matches).first.to_i
+        p "#{self} can win at #{missing_move} and the cell contains #{board.cell_at(missing_move)}"
+        break (@winning_move = missing_move) if board.cell_at(missing_move).empty?
       end
     end
-    
+
     @winning_move.nil? ? false : true
   end
 end

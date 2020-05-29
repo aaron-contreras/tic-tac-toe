@@ -28,6 +28,7 @@ class Computer < Player
     move = self.send(@intelligence.to_sym, board, other_player)
     add_move_to_list move
     clear_winning_move other_player
+    p other_player.winning_move
     move
   end
 
