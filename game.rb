@@ -5,7 +5,6 @@ require_relative './human.rb'
 require_relative './computer.rb'
 require_relative './board.rb'
 require_relative './displayable.rb'
-require 'pry'
 # Contains the tic-tac-toe logic
 class Game
   include Displayable
@@ -31,7 +30,6 @@ class Game
     @player_two = create_player(2)
     @player_one_turn = rand(2)
     @win = false
-    p player_one, player_two
   end
 
   def game_mode
@@ -99,7 +97,6 @@ class Game
   end
 
   def win?
-
     WIN_CONDITIONS.each do |win_condition|
       find_matches(win_condition, player_one.piece)
       break if @win
@@ -126,19 +123,11 @@ class Game
   end
 
   def current_player
-    if player_one_turn?
-      player_one
-    else
-      player_two
-    end
+    player_one_turn? ? player_one : player_two
   end
 
   def other_player
-    if player_one_turn?
-      player_two
-    else
-      player_one
-    end
+    player_one_turn? ? player_two : player_one
   end
 end
 

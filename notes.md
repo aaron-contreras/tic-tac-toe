@@ -16,9 +16,13 @@ First let's set up the task list of things to be done for this version
     - [x] Computer plays random moves.
       - [x] Get the empty cells in the board.
       - [x] Pick a random cell from the empty ones
-  - [ ] Medium
-    - [ ] Play as easy mode unless the other player is missing one move to win
-      - [ ] If other player is missing one move to win
-        - [ ] Place the move in the remaining square (`one?` method)
+  - [x] Medium
+    - [x] Play as easy mode unless the other player is missing one move to win
+    - **One move to win**
+      - [x] Compare winning_moves with the opposites player move_list
+      - [x] if a player's moves matches a two moves in a winning condition and the remaining move is empty
+        - [x] set the player's winning move at that cell
+      - [x] If other player has a winning move
+        - [x] Place the move in the remaining square (`one?` method)
   - [ ] Extreme
   - [ ] Computer cheating mode lol
