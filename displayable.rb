@@ -44,9 +44,9 @@ module Displayable
   def ask_intelligence_level(computer_name)
     puts <<~HEREDOC
       How smart is #{computer_name}?
-        (not much)
-        (very)
-        (genius)
+        (not much) --> You'll most likely win
+        (very) --> You might win
+        (genius) --> Try to win... I dare you!
     HEREDOC
   end
 
