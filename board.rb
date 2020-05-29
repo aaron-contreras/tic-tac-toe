@@ -29,9 +29,9 @@ class Board
   end
 
   def empty_cells
-    empty_cells = @grid.map.with_index do |cell, index|
-      index if cell.empty?
-    end.compact
+    @grid.each_index.select do |cell|
+      @grid[cell].empty?
+    end
   end
 
   def prepare_for_display
