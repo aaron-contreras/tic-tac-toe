@@ -24,5 +24,36 @@ First let's set up the task list of things to be done for this version
         - [x] set the player's winning move at that cell
       - [x] If other player has a winning move
         - [x] Place the move in the remaining square (`one?` method)
-  - [ ] Extreme
+  - [x] Extreme
+    - [x] Plays perfect strategy
+      - [x] Opening moves
+        - If Computer starts
+          - [x] Play corner or center move
+          - If played corner
+            - [x] Play opposite corner next
+            - [x] Follow strategy afterwards 
+        - If Human starts
+          - If Human played Center
+            - [x] Play corner
+            - [x] Follow strategy
+          - If Human Played Corner
+            - [x] Play Center
+          - Follow strategy in order
+            - [x] Win
+              - Player has two in a row
+              - Place the move in the remaining cell.
+            - [x] Block
+              - 'Very' mode
+              - If the opponent has two in a row, place the move in the missing cell
+            - [x] Blocking an opponent's fork
+              - [x] If the opponent has two opposite corners marked and computer has a center move only
+                - [x] Play an empty edge
+            - [x] Center
+              - [x] Mark the center if available
+            - [x] Opposite corner
+               - [x] If the opponent is in the corner, computer plays the opposite corner.
+            - [x] Empty corner
+              - [x] The player plays in a corner square
+            - [x] Empty side
+              - [x] The player plays in any edge square
   - [ ] Computer cheating mode lol

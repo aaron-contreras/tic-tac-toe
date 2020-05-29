@@ -5,22 +5,13 @@ require_relative './human.rb'
 require_relative './computer.rb'
 require_relative './board.rb'
 require_relative './displayable.rb'
+require_relative './game_constants.rb'
 # Contains the tic-tac-toe logic
 class Game
   include Displayable
+  include GameConstants
   attr_reader :player_one, :player_two, :board
   attr_writer :player_one_turn
-
-  GAME_MODES = {
-    1 => %w[Human Human],
-    2 => %w[Human Computer],
-    3 => %w[Computer Computer]
-  }.freeze
-
-  WIN_CONDITIONS = [
-    [0, 1, 2], [3, 4, 5], [6, 7, 8], [0, 4, 8],
-    [6, 4, 2], [0, 3, 6], [1, 4, 7], [2, 5, 8]
-  ].freeze
 
   def initialize
     show_instructions
@@ -65,10 +56,15 @@ class Game
     current_player.move(board, other_player)
   end
 
+  def check_if_players_can_win
+    current_player.can_win?(board, WIN_CONDITIONS)
+    other_player.can_win?(board, WIN_CONDITIONS)
+  end
+
   def play
     until win? || tie?
+      check_if_players_can_win
       board.update_grid(current_player, players_move)
-      current_player.can_win?(board, WIN_CONDITIONS)
       board.show
       switch_turns unless win? || tie?
     end

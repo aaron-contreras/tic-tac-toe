@@ -34,6 +34,28 @@ class Board
     end
   end
 
+  def center_empty?
+    cell_at(4).empty?
+  end
+
+  def opposite_empty?(corner)
+    return corner if corner.nil?
+
+    cell_at(corner).empty?
+  end
+
+  def find_first_empty(move_set)
+    move_set.find { |move| @grid[move].empty? }
+  end
+
+  def empty_corner(corner_moves)
+    find_first_empty(corner_moves)
+  end
+
+  def empty_side(side_moves)
+    find_first_empty(side_moves)
+  end
+
   def prepare_for_display
     @grid.map do |cell|
       if cell.empty?
