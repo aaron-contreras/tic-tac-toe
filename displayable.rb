@@ -41,9 +41,18 @@ module Displayable
     print "What piece will #{player_name} be playing as? Choose any single-character of your liking: "
   end
 
-  def ask_computer_mode
+  def human_vs_computer
+    'Who would you like to play against?'
+  end
+
+  def computer_vs_computer(player_number)
+    "Who is Computer player #{player_number} going to be?"
+  end
+
+  def ask_computer_mode(mode, player_number)
+    title = mode == 3 ? computer_vs_computer(player_number) : human_vs_computer
     puts <<~HEREDOC
-          Who would you like to play against?
+          #{title}
       ----------------------------------------------
       OPTION    PLAYER NAME    PIECE    INTELLIGENCE
       (a)       Ultron         U        Dumb
@@ -51,15 +60,6 @@ module Displayable
       (c)       Skynet         S        Genius
     HEREDOC
     puts
-  end
-
-  def ask_intelligence_level(computer_name)
-    puts <<~HEREDOC
-      How smart is #{computer_name}?
-        (not much) --> You'll most likely win
-        (very) --> You might win
-        (genius) --> Try to win... I dare you!
-    HEREDOC
   end
 
   def ask_player_for_move

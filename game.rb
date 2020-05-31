@@ -29,14 +29,14 @@ class Game
     mode
   end
 
-  def computer_mode
-    ask_computer_mode
+  def computer_mode(player_number)
+    ask_computer_mode(@game_mode, player_number)
     selection = gets.chomp.downcase.to_sym until COMPUTER_MODES.key? selection
     COMPUTER_MODES[selection]
   end
 
   def details(player_number, is_ai = nil)
-    return computer_mode if is_ai
+    return computer_mode(player_number) if is_ai
 
     ask_players_name player_number
     name = gets.chomp
