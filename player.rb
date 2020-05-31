@@ -52,12 +52,16 @@ class Player
     other_player.winning_move = nil
   end
 
+  def moves_matching(condition)
+    @moves.select do |move|
+      condition.include? move
+    end
+  end
+
   def can_win?(board, win_conditions)
     @winning_move = nil
     win_conditions.each do |condition|
-      matches = @moves.select do |move|
-        condition.include? move
-      end
+      matches = moves_matching(condition)
 
       if matches.length == 2
         missing_move = (condition - matches).first.to_i

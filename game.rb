@@ -29,19 +29,21 @@ class Game
     mode
   end
 
+  def computer_mode
+    ask_computer_mode
+    selection = gets.chomp.downcase.to_sym until COMPUTER_MODES.key? selection
+    COMPUTER_MODES[selection]
+  end
+
   def details(player_number, is_ai = nil)
+    return computer_mode if is_ai
+
     ask_players_name player_number
     name = gets.chomp
 
     ask_players_piece name
     piece = gets.chomp[0].upcase
-
-    if is_ai
-      ask_intelligence_level name
-      [name, piece, Computer.intelligence_level]
-    else
-      [name, piece]
-    end
+    [name, piece]
   end
 
   def create_player(player_number)

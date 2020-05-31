@@ -41,6 +41,18 @@ module Displayable
     print "What piece will #{player_name} be playing as? Choose any single-character of your liking: "
   end
 
+  def ask_computer_mode
+    puts <<~HEREDOC
+          Who would you like to play against?
+      ----------------------------------------------
+      OPTION    PLAYER NAME    PIECE    INTELLIGENCE
+      (a)       Ultron         U        Dumb
+      (b)       T-800          T        Smart
+      (c)       Skynet         S        Genius
+    HEREDOC
+    puts
+  end
+
   def ask_intelligence_level(computer_name)
     puts <<~HEREDOC
       How smart is #{computer_name}?
