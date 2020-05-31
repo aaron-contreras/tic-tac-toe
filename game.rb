@@ -64,11 +64,14 @@ class Game
   end
 
   def play
-    until win? || tie?
+    loop do
       check_if_players_can_win
+      ask_player_for_move if current_player.instance_of? Human
       board.update_grid(current_player, players_move)
       board.show
-      switch_turns unless win? || tie?
+      break if win? || tie?
+
+      switch_turns
     end
   end
 

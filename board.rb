@@ -57,9 +57,9 @@ class Board
   end
 
   def prepare_for_display
-    @grid.map do |cell|
+    @grid.map.with_index do |cell, index|
       if cell.empty?
-        ' '
+        index
       else
         cell
       end
@@ -68,14 +68,14 @@ class Board
 
   def show
     grid = prepare_for_display
+    puts
     puts <<~HEREDOC
-      #{grid[0]}|#{grid[1]}|#{grid[2]}
-      -+-+-
-      #{grid[3]}|#{grid[4]}|#{grid[5]}
-      -+-+-
-      #{grid[6]}|#{grid[7]}|#{grid[8]}
+       #{grid[0]} | #{grid[1]} | #{grid[2]} 
+      ---+---+---
+       #{grid[3]} | #{grid[4]} | #{grid[5]} 
+      ---+---+---
+       #{grid[6]} | #{grid[7]} | #{grid[8]} 
     HEREDOC
-
     puts
   end
 
