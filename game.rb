@@ -63,12 +63,22 @@ class Game
     other_player.can_win?(board, WIN_CONDITIONS)
   end
 
+  def update_board
+    board.update_grid(current_player, players_move)
+    board.show
+  end
+
+  def thinking
+    puts "#{current_player.name} is thinking..."
+    sleep(1)
+  end
+
   def play
     loop do
       check_if_players_can_win
       ask_player_for_move if current_player.instance_of? Human
-      board.update_grid(current_player, players_move)
-      board.show
+      thinking if current_player.instance_of? Computer
+      update_board
       break if win? || tie?
 
       switch_turns
@@ -76,11 +86,7 @@ class Game
   end
 
   def game_over
-    if win?
-      win_message current_player
-    else
-      tie_message
-    end
+    win? ? win_message(current_player) : tie_message
   end
 
   def start_game
@@ -99,14 +105,11 @@ class Game
 
   def win?
     WIN_CONDITIONS.each do |win_condition|
-      find_matches(win_condition, player_one.piece)
-      break if @win
-
-      find_matches(win_condition, player_two.piece)
-      break if @win
+      break if find_matches(win_condition, player_one.piece)
+      break if find_matches(win_condition, player_two.piece)
     end
 
-    @win
+    @num
   end
 
   def tie?
