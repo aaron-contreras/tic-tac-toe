@@ -105,11 +105,11 @@ class Game
 
   def win?
     WIN_CONDITIONS.each do |win_condition|
-      break if find_matches(win_condition, player_one.piece)
-      break if find_matches(win_condition, player_two.piece)
+      return true if find_matches(win_condition, player_one.piece)
+      return true if find_matches(win_condition, player_two.piece)
     end
 
-    @num
+    false
   end
 
   def tie?
