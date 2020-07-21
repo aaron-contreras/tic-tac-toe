@@ -79,20 +79,24 @@ class Game
       ask_player_for_move if current_player.instance_of? Human
       thinking if current_player.instance_of? Computer
       update_board
-      break if win? || tie?
+      break if game_over?
 
       switch_turns
     end
   end
 
-  def game_over
+  def game_over?
+    win? || tie?
+  end
+
+  def game_over_message
     win? ? win_message(current_player) : tie_message
   end
 
   def start_game
     board.show
     play
-    game_over
+    game_over_message
   end
 
   private
@@ -134,6 +138,3 @@ class Game
     player_one_turn? ? player_two : player_one
   end
 end
-
-game = Game.new
-game.start_game
