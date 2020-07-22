@@ -21,6 +21,7 @@ class Game
     @player_two = create_player(2)
     @player_one_turn = rand(2)
     @win = false
+    @tie = false
   end
 
   def game_mode
@@ -120,6 +121,7 @@ class Game
     return if win?
 
     @tie = true if board.filled?
+    @tie
   end
 
   def switch_turns
