@@ -14,11 +14,7 @@ class Game
   attr_writer :player_one_turn
 
   def initialize
-    show_instructions
     @board = Board.new
-    @game_mode = game_mode
-    @player_one = create_player(1)
-    @player_two = create_player(2)
     @player_one_turn = rand(2)
     @win = false
     @tie = false
@@ -95,6 +91,10 @@ class Game
   end
 
   def start_game
+    show_instructions
+    @game_mode = game_mode
+    @player_one = create_player(1)
+    @player_two = create_player(2)
     board.show
     play
     game_over_message
@@ -110,11 +110,11 @@ class Game
 
   def win?
     WIN_CONDITIONS.each do |win_condition|
-      return true if find_matches(win_condition, player_one.piece)
-      return true if find_matches(win_condition, player_two.piece)
+      return @win if find_matches(win_condition, player_one.piece)
+      return @win if find_matches(win_condition, player_two.piece)
     end
 
-    false
+    @win
   end
 
   def tie?
