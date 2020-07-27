@@ -1,32 +1,32 @@
 # frozen_string_literal: true
+
 # rubocop:disable Metrics/BlockLength
 
 require_relative '../lib/game.rb'
 
 describe Game do
+  subject(:game) { Game.new }
+  let(:game_board) { game.board }
+
+  before do
+    allow(game).to receive(:player_one).and_return double('player_one', piece: 'A')
+    allow(game).to receive(:player_two).and_return double('player_two', piece: 'V')
+  end
+
+  let(:winner) { game.player_one.piece }
+  let(:loser) { game.player_two.piece }
+
   describe '#game_over?' do
-    subject(:game) { Game.new }
-
-    before do
-      allow_any_instance_of(described_class).to receive(:show_instructions)
-      allow_any_instance_of(described_class).to receive(:game_mode).and_return 1
-      allow_any_instance_of(described_class).to receive(:create_player).with(1).and_return double('player1', piece: 'H')
-      allow_any_instance_of(described_class).to receive(:create_player).with(2).and_return double('player2', piece: 'P')
-    end
-
-    let(:game_board) { game.board }
-    let(:winner_piece) { game.player_one.piece }
-    let(:loser_piece) { game.player_two.piece }
-
     context 'when board has three in a row horizontally' do
       context 'in top row' do
         it 'is over' do
           # Arrange
           board_arrangement = [
-            winner_piece, winner_piece, winner_piece,
-            loser_piece, '', '',
-            loser_piece, '', ''
+            winner, winner, winner,
+            loser, '', '',
+            loser, '', ''
           ]
+
           game_board.instance_variable_set(:@grid, board_arrangement)
 
           expect(game).to be_game_over
@@ -35,8 +35,8 @@ describe Game do
       context 'in middle row' do
         it 'is over' do
           board_arrangement = [
-            loser_piece, loser_piece, '',
-            winner_piece, winner_piece, winner_piece,
+            loser, loser, '',
+            winner, winner, winner,
             '', '', ''
           ]
           game_board.instance_variable_set(:@grid, board_arrangement)
@@ -46,9 +46,9 @@ describe Game do
       context 'in bottom row' do
         it 'is over' do
           board_arrangement = [
-            loser_piece, '', loser_piece,
-            loser_piece, '', '',
-            winner_piece, winner_piece, winner_piece
+            loser, '', loser,
+            loser, '', '',
+            winner, winner, winner
           ]
           game_board.instance_variable_set(:@grid, board_arrangement)
           expect(game).to be_game_over
@@ -60,9 +60,9 @@ describe Game do
       context 'in left column' do
         it 'is over' do
           board_arrangement = [
-            winner_piece, loser_piece, '',
-            winner_piece, loser_piece, '',
-            winner_piece, '', ''
+            winner, loser, '',
+            winner, loser, '',
+            winner, '', ''
           ]
           game_board.instance_variable_set(:@grid, board_arrangement)
 
@@ -73,9 +73,9 @@ describe Game do
       context 'in middle column' do
         it 'is over' do
           board_arrangement = [
-            loser_piece, winner_piece, '',
-            '', winner_piece, loser_piece,
-            '', winner_piece, ''
+            loser, winner, '',
+            '', winner, loser,
+            '', winner, ''
           ]
           game_board.instance_variable_set(:@grid, board_arrangement)
           expect(game).to be_game_over
@@ -85,9 +85,9 @@ describe Game do
       context 'in right column' do
         it 'is over' do
           board_arrangement = [
-            loser_piece, '', winner_piece,
-            '', loser_piece, winner_piece,
-            loser_piece, '', winner_piece
+            loser, '', winner,
+            '', loser, winner,
+            loser, '', winner
           ]
           game_board.instance_variable_set(:@grid, board_arrangement)
           expect(game).to be_game_over
@@ -99,9 +99,9 @@ describe Game do
       context 'from top left to bottom right' do
         it 'is over' do
           board_arrangement = [
-            winner_piece, '', '',
-            loser_piece, winner_piece, '',
-            loser_piece, '', winner_piece
+            winner, '', '',
+            loser, winner, '',
+            loser, '', winner
           ]
           game_board.instance_variable_set(:@grid, board_arrangement)
           expect(game).to be_game_over
@@ -111,9 +111,9 @@ describe Game do
       context 'from bottom left to top right' do
         it 'is over' do
           board_arrangement = [
-            loser_piece, '', winner_piece,
-            loser_piece, winner_piece, '',
-            winner_piece, '', ''
+            loser, '', winner,
+            loser, winner, '',
+            winner, '', ''
           ]
           game_board.instance_variable_set(:@grid, board_arrangement)
           expect(game).to be_game_over
@@ -124,9 +124,9 @@ describe Game do
     context 'when the board is full' do
       it 'is over' do
         board_arrangement = [
-          winner_piece, loser_piece, winner_piece,
-          loser_piece, winner_piece, loser_piece,
-          loser_piece, winner_piece, loser_piece 
+          winner, loser, winner,
+          loser, winner, loser,
+          loser, winner, loser
         ]
         game_board.instance_variable_set(:@grid, board_arrangement)
         expect(game).to be_game_over
@@ -136,7 +136,7 @@ describe Game do
     context 'when the board is not full and no winners' do
       it 'is not over' do
         board_arrangement = [
-          winner_piece, loser_piece, '',
+          winner, loser, '',
           '', '', '',
           '', '', ''
         ]
@@ -157,4 +157,31 @@ describe Game do
       end
     end
   end
+
+  describe '#play' do
+    it 'loops until game is over' do
+      # Arrange
+      board_arrangement = [
+        winner, loser, loser,
+        winner, loser, winner,
+        winner, winner, loser
+      ]
+
+      game_board.instance_variable_set(:@grid, board_arrangement)
+
+      allow(game).to receive(:check_if_players_can_win)
+      allow(game).to receive(:ask_player_for_move)
+      allow(game).to receive(:thinking)
+      allow(game).to receive(:update_board)
+      allow(game).to receive(:switch_turns)
+
+      # Assert
+      expect(game).to receive(:game_over?).once.and_return(true)
+
+      # Act
+      game.play
+    end
+  end
 end
+
+# rubocop:enable Metrics/BlockLength
