@@ -7,13 +7,9 @@ class Board
   end
 
   def valid_move?(move)
-    return false if move.nil?
+    return false unless move.between?(0, 8)
 
-    if @grid[move].empty?
-      true
-    else
-      false
-    end
+    @grid[move].empty?
   end
 
   def update_grid(player, move)
@@ -56,6 +52,21 @@ class Board
     find_first_empty(side_moves)
   end
 
+  def show
+    grid = prepare_for_display
+    puts <<~HEREDOC
+
+       #{grid[0]} | #{grid[1]} | #{grid[2]} 
+      ---+---+---
+       #{grid[3]} | #{grid[4]} | #{grid[5]} 
+      ---+---+---
+       #{grid[6]} | #{grid[7]} | #{grid[8]} 
+
+    HEREDOC
+  end
+
+  private
+
   def prepare_for_display
     @grid.map.with_index do |cell, index|
       if cell.empty?
@@ -65,21 +76,6 @@ class Board
       end
     end
   end
-
-  def show
-    grid = prepare_for_display
-    puts
-    puts <<~HEREDOC
-       #{grid[0]} | #{grid[1]} | #{grid[2]} 
-      ---+---+---
-       #{grid[3]} | #{grid[4]} | #{grid[5]} 
-      ---+---+---
-       #{grid[6]} | #{grid[7]} | #{grid[8]} 
-    HEREDOC
-    puts
-  end
-
-  private
 
   def build_grid
     Array.new(9, '')
