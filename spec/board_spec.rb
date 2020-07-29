@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+# rubocop: disable Metrics/BlockLength
+
 require_relative '../lib/board.rb'
 
 describe Board do
@@ -22,9 +24,9 @@ describe Board do
       # Arrange
       cell = 0
       grid = board.instance_variable_get(:@grid)
-      
+
       # Act/Assert
-      expect { board.update_grid(player, cell) }.to change { grid[cell] }
+      expect { board.update_grid(player, cell) }.to(change { grid[cell] })
     end
   end
 
@@ -44,7 +46,7 @@ describe Board do
         it 'is invalid' do
           # Arrange
           move = -3
-          
+
           # Act/Assert
           expect(board.valid_move?(move)).to be false
         end
@@ -78,4 +80,42 @@ describe Board do
       end
     end
   end
+
+  describe '#filled?' do
+    context 'when board is full' do
+      it 'returns true' do
+        board_arrangment = [
+          'A', 'A', 'A',
+          'A', 'A', 'A',
+          'A', 'A', 'A'
+        ]
+
+        board.instance_variable_set(:@grid, board_arrangment)
+
+        expect(board).to be_filled
+      end
+    end
+
+    context 'when board is not full' do
+      it 'returns false' do
+        board_arrangement = [
+          'A', 'A', 'A',
+          '', 'A', 'A',
+          'A', 'A', 'A'
+        ]
+
+        board.instance_variable_set(:@grid, board_arrangement)
+
+        expect(board).not_to be_filled
+      end
+    end
+
+    context 'when board is empty' do
+      it 'returns false' do
+        expect(board).not_to be_filled
+      end
+    end
+  end
 end
+
+# rubocop: enable Metrics/BlockLength
